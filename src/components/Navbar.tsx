@@ -47,7 +47,9 @@ export function Navbar() {
             {theme === "dark" ? <Sun size={18} /> : <Moon size={18} />}
           </button>
           <a
-            href="mailto:sokary32@gmail.com"
+            href="https://wa.me/+201001239584"
+            target="_blank"
+            rel="noopener noreferrer"
             className="rounded-full bg-[#D4AF37] px-6 py-2.5 text-sm font-semibold uppercase tracking-wider text-black transition-all hover:bg-[#D4AF37]/90"
           >
             Let&apos;s Talk
@@ -56,12 +58,12 @@ export function Navbar() {
 
         <button
           onClick={() => setMobileOpen(!mobileOpen)}
-          className="flex flex-col gap-1.5 md:hidden"
+          className={`flex flex-col gap-1.5 md:hidden ${theme === "light" ? "text-black" : "text-white"}`}
           aria-label="Toggle menu"
         >
-          <span className={`block h-0.5 w-6 bg-white transition-transform ${mobileOpen ? "translate-y-2 rotate-45" : ""}`} />
-          <span className={`block h-0.5 w-6 bg-white transition-opacity ${mobileOpen ? "opacity-0" : ""}`} />
-          <span className={`block h-0.5 w-6 bg-white transition-transform ${mobileOpen ? "-translate-y-2 -rotate-45" : ""}`} />
+          <span className={`block h-0.5 w-6 ${theme === "light" ? "bg-black" : "bg-white"} transition-transform ${mobileOpen ? "translate-y-2 rotate-45" : ""}`} />
+          <span className={`block h-0.5 w-6 ${theme === "light" ? "bg-black" : "bg-white"} transition-opacity ${mobileOpen ? "opacity-0" : ""}`} />
+          <span className={`block h-0.5 w-6 ${theme === "light" ? "bg-black" : "bg-white"} transition-transform ${mobileOpen ? "-translate-y-2 -rotate-45" : ""}`} />
         </button>
       </div>
 
@@ -91,7 +93,9 @@ export function Navbar() {
                   {theme === "dark" ? <Sun size={18} /> : <Moon size={18} />}
                 </button>
                 <a
-                  href="mailto:sokary32@gmail.com"
+                  href="https://wa.me/+201001239584"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="rounded-full bg-[#D4AF37] px-6 py-2.5 text-sm font-semibold uppercase tracking-wider text-black"
                 >
                   Let&apos;s Talk
