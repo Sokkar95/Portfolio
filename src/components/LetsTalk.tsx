@@ -41,7 +41,9 @@ export function LetsTalk() {
             Let&apos;s build<br className="sm:hidden" /> the system.
           </h2>
           <motion.a
-            href="mailto:sokary32@gmail.com"
+            href="https://wa.me/+201001239584"
+            target="_blank"
+            rel="noopener noreferrer"
             style={{ x: buttonX, y: buttonY }}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.97 }}
