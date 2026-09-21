@@ -6,6 +6,7 @@ import { MouseGlow } from "@/components/MouseGlow"
 import { Navbar } from "@/components/Navbar"
 import { Footer } from "@/components/Footer"
 import { Ticker } from "@/components/Ticker"
+import { Analytics } from "@vercel/analytics/next"
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -44,6 +45,7 @@ export default function RootLayout({
           <Ticker />
           <Footer />
         </ThemeProvider>
+        <Analytics />
       </body>
     </html>
   )
