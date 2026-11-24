@@ -48,3 +48,6 @@ prod.log
 
 # opencode config (contains API keys)
 opencode.json
+
+.vercel
+.env*

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { cn } from "@/lib/cn";
+import { track } from "@/lib/analytics";
 import { FORM_SERVICES, SITE, SOCIALS, waLink } from "@/lib/site";
 import { Reveal } from "./Reveal";
 import { SectionLabel } from "./SectionLabel";
@@ -45,6 +46,7 @@ export function Contact() {
 
   const send = (via: "whatsapp" | "email") => {
     if (!validate()) return;
+    track("contact_submit", { method: via, project_type: form.type });
     setSent(via);
     window.open(href(via), "_blank", "noopener,noreferrer");
   };
@@ -62,6 +64,7 @@ export function Contact() {
         ta.remove();
       }
       setCopied("done");
+      track("copy_email");
     } catch {
       setCopied("fail");
     }
@@ -112,6 +115,7 @@ export function Contact() {
                     <p className="font-mono text-xs text-muted">Email</p>
                     <a
                       href={`mailto:${SITE.email}`}
+                      onClick={() => track("contact_click", { method: "email" })}
                       className="block truncate rounded text-base underline-offset-4 hover:underline"
                     >
                       {SITE.email}

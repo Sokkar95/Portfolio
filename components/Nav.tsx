@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/cn";
+import { track } from "@/lib/analytics";
 import { scrollToId } from "@/lib/scroll";
 import { NAV, SITE, SOCIALS } from "@/lib/site";
 import { Monogram } from "./Monogram";
@@ -66,7 +67,10 @@ export function Nav() {
           </a>
           <button
             type="button"
-            onClick={() => scrollToId("contact")}
+            onClick={() => {
+              track("cta_click", { label: "Let's Talk" });
+              scrollToId("contact");
+            }}
             className="inline-flex items-center justify-center rounded-full bg-accent px-4 py-2 text-center text-sm font-semibold leading-none text-[#14140f] transition-opacity hover:opacity-90"
           >
             Let&apos;s Talk

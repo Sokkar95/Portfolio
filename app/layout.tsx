@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Instrument_Serif, JetBrains_Mono, Space_Grotesk } from "next/font/google";
+import { Analytics } from "@/components/Analytics";
 import { SITE } from "@/lib/site";
 import "./globals.css";
 
@@ -92,6 +93,7 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: "document.documentElement.classList.add('js')" }}
         />
         {children}
+        <Analytics />
       </body>
     </html>
   );
