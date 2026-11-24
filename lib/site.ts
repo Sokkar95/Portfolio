@@ -15,7 +15,7 @@ export const SITE = {
   facebook: "https://www.facebook.com/AmrHeshamElSokkary",
   instagram: "https://www.instagram.com/amrelsokary",
   url: "https://sokkar.vercel.app",
-  resume: "/Amr-Elsokkary-Resume.pdf",
+  resume: "/Amr_Elsokkary_Product_Designer_Resume.pdf",
 } as const;
 
 export const waLink = (text?: string) =>
