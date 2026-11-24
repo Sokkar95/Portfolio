@@ -1,0 +1,265 @@
+@import "tailwindcss";
+
+/* ------------------------------------------------------------------ *
+ * Tokens — the palette is pulled straight from the hero portrait:
+ * the green of the shirt, lifted a little so it reads on the near-black
+ * studio backdrop the character stands against.
+ * ------------------------------------------------------------------ */
+:root {
+  --bg: #0b0c0a;
+  --surface: #111310;
+  --surface-2: #171a16;
+  --line: rgba(237, 234, 227, 0.1);
+  --line-strong: rgba(237, 234, 227, 0.22);
+  --text: #edeae3;
+  --muted: #918d83;
+  --accent: #4ec27f;
+  --accent-2: #7ed6a4;
+  --accent-soft: rgba(78, 194, 127, 0.15);
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@theme inline {
+  --font-sans: var(--font-grotesk), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains), ui-monospace, SFMono-Regular, monospace;
+  --font-serif: var(--font-instrument), ui-serif, Georgia, serif;
+
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+  --color-ink: var(--text);
+  --color-muted: var(--muted);
+  --color-accent: var(--accent);
+  --color-accent-2: var(--accent-2);
+  --color-accent-soft: var(--accent-soft);
+}
+
+/* ------------------------------------------------------------------ *
+ * Base
+ *
+ * Layered on purpose: unlayered declarations beat every Tailwind
+ * utility, so the reset lives inside @layer base to keep padding,
+ * margin and gap classes working.
+ * ------------------------------------------------------------------ */
+@layer base {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html {
+    background: var(--bg);
+    color: var(--text);
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+    /* `clip` (not `hidden`) keeps the page from scrolling sideways without
+       turning the root into a scroll container — `sticky` still works. */
+    overflow-x: clip;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-sans);
+    overflow-x: clip;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-weight: 600;
+    letter-spacing: -0.02em;
+  }
+
+  button,
+  input,
+  textarea,
+  select {
+    font: inherit;
+    color: inherit;
+    background: none;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  img,
+  svg,
+  video {
+    display: block;
+    max-width: 100%;
+  }
+}
+
+::selection {
+  background: var(--accent);
+  color: #06140c;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: #0e0f0d;
+}
+::-webkit-scrollbar-thumb {
+  background: #2a2c26;
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #3d3f36;
+}
+
+:where(a, button, input, textarea, select, [tabindex]):focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 8px;
+}
+
+/* ------------------------------------------------------------------ *
+ * Scroll reveal
+ *
+ * Visible by default, so a browser without JavaScript still gets the
+ * whole page. `html.js` (set by an inline script before paint) is what
+ * hides them for the observer to bring in.
+ * ------------------------------------------------------------------ */
+html.js .reveal {
+  opacity: 0;
+  transform: translateY(22px);
+  transition:
+    opacity 0.8s var(--ease),
+    transform 0.8s var(--ease);
+}
+html.js .reveal.is-in {
+  opacity: 1;
+  transform: none;
+}
+
+/* ------------------------------------------------------------------ *
+ * Marquee
+ * ------------------------------------------------------------------ */
+.marquee-track {
+  display: flex;
+  width: max-content;
+  will-change: transform;
+  animation: marquee 44s linear infinite;
+}
+.marquee:hover .marquee-track {
+  animation-play-state: paused;
+}
+@keyframes marquee {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+/* ------------------------------------------------------------------ *
+ * Backdrop pieces
+ * ------------------------------------------------------------------ */
+.bg-dots {
+  background-image: radial-gradient(rgba(237, 234, 227, 0.07) 1px, transparent 1px);
+  background-size: 22px 22px;
+  -webkit-mask-image: radial-gradient(125% 85% at 50% 0%, #000 0%, transparent 70%);
+  mask-image: radial-gradient(125% 85% at 50% 0%, #000 0%, transparent 70%);
+}
+.bg-grain {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  opacity: 0.035;
+  mix-blend-mode: overlay;
+}
+@keyframes drift-a {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+    opacity: 0.5;
+  }
+  50% {
+    transform: translate3d(3%, -4%, 0) scale(1.14);
+    opacity: 0.85;
+  }
+}
+@keyframes drift-b {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1.08);
+    opacity: 0.45;
+  }
+  50% {
+    transform: translate3d(-4%, 3%, 0) scale(1);
+    opacity: 0.78;
+  }
+}
+.glow-a {
+  animation: drift-a 17s ease-in-out infinite;
+}
+.glow-b {
+  animation: drift-b 23s ease-in-out infinite;
+}
+
+/* ------------------------------------------------------------------ *
+ * Hero portrait — 3D tilt only (no scale / skew, so the face never
+ * stretches), plus a key light that tracks the cursor.
+ * ------------------------------------------------------------------ */
+.portrait-card {
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+.portrait-img {
+  -webkit-mask-image: radial-gradient(118% 104% at 50% 46%, #000 62%, transparent 100%);
+  mask-image: radial-gradient(118% 104% at 50% 46%, #000 62%, transparent 100%);
+}
+@media (max-width: 767px) {
+  .portrait-card {
+    transform: none !important;
+  }
+}
+
+/* ------------------------------------------------------------------ *
+ * Misc
+ * ------------------------------------------------------------------ */
+.glass {
+  background: rgba(11, 12, 10, 0.74);
+  -webkit-backdrop-filter: blur(16px) saturate(140%);
+  backdrop-filter: blur(16px) saturate(140%);
+}
+.hairline {
+  background: linear-gradient(90deg, transparent, var(--line-strong) 20%, var(--line-strong) 80%, transparent);
+}
+.no-bars {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.no-bars::-webkit-scrollbar {
+  display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .reveal,
+  html.js .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  .marquee-track,
+  .glow-a,
+  .glow-b {
+    animation: none !important;
+  }
+}

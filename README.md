@@ -1,36 +1,82 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Amr Elsokkary — Portfolio
 
-## Getting Started
+Dark-themed single-page portfolio built with **Next.js 16 (App Router)**, **React 19**,
+**TypeScript**, **Tailwind CSS v4**, **Framer Motion** and **Lucide React**.
 
-First, run the development server:
+## Getting started
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+npm run dev      # http://localhost:3000
+npm run build    # production build
+npm run start    # serve the production build
+npm run lint     # eslint
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Structure
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```
+app/
+  globals.css          # reset (@layer base), .hero-heading gradient, scrollbar
+  layout.tsx           # Kanit font via next/font, metadata, viewport
+  page.tsx             # section order + overflow-x: clip wrapper
+components/
+  HeroSection.tsx      # h-screen hero: nav, giant heading, magnet portrait, bottom bar
+  Navbar.tsx           # About / Services / Projects / Contact
+  MarqueeSection.tsx   # infinite scrolling word strip
+  AboutSection.tsx     # gradient heading + word-by-word reveal
+  ServicesSection.tsx  # white panel, rounded top, 4 numbered services
+  ProjectsSection.tsx  # 3 sticky-stacking cards with scroll-linked scale
+  Magnet.tsx           # cursor-attraction wrapper
+  AnimatedText.tsx     # staggered word reveal on scroll into view
+  ContactButton.tsx    # gradient pill
+  LiveProjectButton.tsx# ghost pill -> Behance
+  DownloadCVButton.tsx # ghost pill + Download icon -> /Resume.pdf
+lib/site.ts            # email, Behance URL, resume path, nav links
+public/images/         # portrait + 9 project screenshots
+public/Resume.pdf
+scripts/
+  make-placeholders.mjs # regenerates the placeholder art
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Before you ship
 
-## Learn More
+The images and CV are **generated placeholders**, so the page renders correctly out of
+the box. Replace them with real artwork — same filenames, same paths:
 
-To learn more about Next.js, take a look at the following resources:
+| File | Replace with |
+| --- | --- |
+| `public/images/my-avatar.png` | Portrait cut-out (transparent PNG looks best) |
+| `public/images/3arabawy-{1,2,3}.png` | 3arabawy screens |
+| `public/images/gfit-{1,2,3}.png` | G-Fit screens |
+| `public/images/darak-{1,2,3}.png` | DARAK screens |
+| `public/Resume.pdf` | The real CV |
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Then update the two placeholders in `lib/site.ts`:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```ts
+email: "amr.elsokkary@gmail.com",   // TODO
+behance: "https://www.behance.net/" // TODO
+```
 
-## Deploy on Vercel
+Those feed the Contact button, the nav Contact link, and every "View on Behance" button.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Notes on the implementation
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- **Tailwind v4 cascade layers.** The global reset lives inside `@layer base` on purpose.
+  Tailwind v4 emits utilities in `@layer utilities`, and *unlayered* declarations beat
+  layered ones — an unlayered `* { margin: 0; padding: 0 }` silently kills every
+  `p-*` / `m-*` / `gap-*` class on the page.
+- **Sticky stacking.** Each project card sits in a `h-[145vh]` runway so the sticky
+  child has real travel to pin with. If the runway is the same height as the card the
+  cards scroll past instead of stacking.
+- **Scroll-linked scale.** Cards scale with
+  `useScroll` + `useTransform` using
+  `targetScale = 1 - (totalCards - 1 - index) * 0.03`.
+- **Magnet transitions.** `Magnet` accepts CSS-style shorthand
+  (`"transform 0.3s ease-out"`) and parses it into a typed Framer Motion transition,
+  which keeps the props readable while satisfying Framer Motion v13's stricter types.
+- **Smooth anchor scrolling** comes from `scroll-behavior: smooth` in `globals.css`.
+  `data-scroll-behavior="smooth"` is intentionally *not* set on `<html>`: in Next.js 16
+  that attribute re-enables the legacy behaviour of force-resetting scroll on route
+  changes, which is not wanted here.

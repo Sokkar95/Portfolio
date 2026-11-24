@@ -40,5 +40,11 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
+# local dev
+prod.log
+
+# generated quality-check captures
+/screenshots
+
 # opencode config (contains API keys)
 opencode.json
